@@ -11,24 +11,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesAdapter :
+class MoviesAdapter(private val clickListener: (MovieRemote) -> Unit) :
     ListAdapter<MovieRemote, MoviesAdapter.MovieViewHolder>(MoviesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         MovieViewHolder(parent.inflate(R.layout.movie_item))
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickListener)
     }
 
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = MovieItemBinding.bind(view)
 
-        fun bind(movie: MovieRemote) {
+        fun bind(movie: MovieRemote, clickListener: (MovieRemote) -> Unit) {
             with(binding) {
                 imMovieItem.loadUrl("https://image.tmdb.org/t/p/w185/${movie.posterPath}")
                 tvTitleMovieItem.text = movie.title
                 tvRatioMovieItem.text = movie.voteAverage.toString()
+                cvMovieItem.setOnClickListener { clickListener(movie) }
             }
         }
     }

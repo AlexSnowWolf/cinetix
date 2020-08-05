@@ -6,7 +6,7 @@ import alex.guerra.cinetix.framework.networking.TmdbClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RemoteDataSource : MovieDataSource {
+class RemoteDataSource : MovieRemoteDataSource {
     private val service: TheMovieDbService = TmdbClient.tmdbService
 
     override suspend fun getPopularMoviesByRegion(region: String): MoviesRemoteResult =
