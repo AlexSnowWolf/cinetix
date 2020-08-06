@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvMovieItem"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:backgroundTint="@color/cardview_dark_background"
     android:layout_margin="4dp"
     app:cardCornerRadius="4dp">
@@ -16,38 +16,56 @@
         <ImageView
             android:id="@+id/imMovieItem"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/poster_movie"
-            app:layout_constraintDimensionRatio="w,1:1"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="9:14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <TextView
             android:id="@+id/tvTitleMovieItem"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:textAlignment="center"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="viewStart"
             android:textColor="@color/textWhite"
-            app:layout_constraintBottom_toTopOf="@+id/tvRatioMovieItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imMovieItem"
             tools:text="@string/title_fake" />
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleMovieItem" />
+
         <TextView
             android:id="@+id/tvRatioMovieItem"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:textAlignment="center"
             android:textColor="@color/textWhite"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleMovieItem"
+            app:layout_constraintTop_toBottomOf="@+id/view"
             tools:text="@string/ratio_fake" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

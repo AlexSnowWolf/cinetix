@@ -10,7 +10,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             this,
             LOCATION_PERMISSION_CODE,
-            ::getRemoteMovies
+            viewModel::getRemotePopularMovies
         )
     }
 
@@ -74,16 +73,10 @@ class MainActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty()) &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    Toast.makeText(this, "Start Location by accepting", Toast.LENGTH_SHORT).show()
-                    getRemoteMovies()
+                    viewModel.getRemotePopularMovies()
                 }
             }
         }
-    }
-
-    private fun getRemoteMovies() {
-        viewModel.getRemotePopularMovies()
-        Toast.makeText(this, "Start Location", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

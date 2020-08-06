@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ui.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -53,12 +54,16 @@
                 android:id="@+id/tvMovieDetailSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/tvMovieDetailInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textSize="18sp"
                 android:text="TextView" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

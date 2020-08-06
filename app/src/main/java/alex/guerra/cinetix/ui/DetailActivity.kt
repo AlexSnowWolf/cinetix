@@ -24,7 +24,7 @@ class DetailActivity : AppCompatActivity() {
                 val background = backdropPath ?: posterPath
                 movieDetailImage.loadUrl("https://image.tmdb.org/t/p/w780$background")
                 tvMovieDetailSummary.text = overview
-                tvMovieDetailSummary.text = buildSpannedString {
+                tvMovieDetailInfo.text = buildSpannedString {
 
                     bold { append("Original language: ") }
                     appendln(originalLanguage)
