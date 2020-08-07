@@ -1,10 +1,10 @@
 package alex.guerra.cinetix.ui
 
 import alex.guerra.cinetix.databinding.ActivityMainBinding
-import alex.guerra.cinetix.domain.MovieRemote
 import alex.guerra.cinetix.framework.showPermissionRequest
 import alex.guerra.cinetix.framework.startActivity
 import alex.guerra.cinetix.framework.viewmodels.MainViewModel
+import alex.guerra.cinetix.framework.viewmodels.MainViewModel.UiModel
 import alex.guerra.cinetix.framework.viewmodels.MainViewModelFactory
 import android.Manifest
 import android.content.pm.PackageManager
@@ -17,9 +17,9 @@ import androidx.lifecycle.ViewModelProvider
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val movieAdapter = MoviesAdapter(::goToDetail)
     // private val viewModel: MainViewModel by viewModels()
     private lateinit var viewModel: MainViewModel
+    private lateinit var movieAdapter: MoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,35 +31,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.movies.observe(this, Observer { movies ->
-            movieAdapter.submitList(movies)
-        })
+        viewModel.model.observe(this, Observer(::updateUi))
 
-        viewModel.loading.observe(this, Observer { result ->
-            when (result) {
-                true -> binding.progressBar.visibility = View.VISIBLE
-                false -> binding.progressBar.visibility = View.GONE
+        viewModel.navigation.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let { movie ->
+                startActivity<DetailActivity> {
+                    putExtra(DetailActivity.MOVIE, movie)
+                }
             }
         })
+    }
+
+    private fun updateUi(model: UiModel) {
+        binding.progressBar.visibility = if (model is UiModel.Loading) View.VISIBLE else View.GONE
+
+        when (model) {
+            is UiModel.Content -> movieAdapter.submitList(model.movies)
+            is UiModel.RequestLocationPermission -> showPermissionRequest(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                LOCATION_PERMISSION_CODE,
+                viewModel::getRemotePopularMovies
+            )
+        }
     }
 
     private fun setup() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this))
             .get(MainViewModel::class.java)
 
-        binding.recyclerView.apply { adapter = movieAdapter }
-        showPermissionRequest(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            this,
-            LOCATION_PERMISSION_CODE,
-            viewModel::getRemotePopularMovies
-        )
-    }
+        movieAdapter = MoviesAdapter(viewModel::onMovieClicked)
 
-    private fun goToDetail(movie: MovieRemote) {
-        startActivity<DetailActivity> {
-            putExtra(DetailActivity.MOVIE, movie)
-        }
+        binding.recyclerView.apply { adapter = movieAdapter }
     }
 
     override fun onRequestPermissionsResult(

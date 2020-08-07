@@ -1,6 +1,7 @@
 package alex.guerra.cinetix.framework.viewmodels
 
 import alex.guerra.cinetix.domain.MovieRemote
+import alex.guerra.cinetix.framework.Event
 import alex.guerra.cinetix.framework.UseCase
 import alex.guerra.cinetix.repository.MovieRepository
 import alex.guerra.cinetix.repository.RegionRepository
@@ -16,23 +17,41 @@ class MainViewModel(
     movieRepository: MovieRepository,
     regionRepository: RegionRepository
 ) : ViewModel() {
-    // private val repository = MovieRepository(RemoteDataSource())
+
     private val useCase = UseCase(
         getPopularMovies = GetPopularMovies(movieRepository),
         getRegion = GetRegion(regionRepository)
     )
-    private val _movies = MutableLiveData<List<MovieRemote>>()
-    val movies: LiveData<List<MovieRemote>> get() = _movies
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> get() = _loading
+
+    sealed class UiModel {
+        object Loading : UiModel()
+        class Content(val movies: List<MovieRemote>) : UiModel()
+        object RequestLocationPermission : UiModel()
+    }
+
+    private val _model = MutableLiveData<UiModel>()
+    val model: LiveData<UiModel>
+        get() {
+            if (_model.value == null) refresh()
+            return _model
+        }
+
+    private val _navigation = MutableLiveData<Event<MovieRemote>>()
+    val navigation: LiveData<Event<MovieRemote>> get() = _navigation
+
+    private fun refresh() {
+        _model.value = UiModel.RequestLocationPermission
+    }
 
     fun getRemotePopularMovies() {
         viewModelScope.launch {
-            _loading.value = true
-            val regionResult = useCase.getRegion.invoke()
-            val result = useCase.getPopularMovies(regionResult)
-            _movies.value = result.results
-            _loading.value = false
+            _model.value = UiModel.Loading
+            val regionResult = useCase.getRegion()
+            _model.value = UiModel.Content(useCase.getPopularMovies(regionResult).results)
         }
+    }
+
+    fun onMovieClicked(movie: MovieRemote) {
+        _navigation.value = Event(movie)
     }
 }

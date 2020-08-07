@@ -31,13 +31,12 @@ inline fun <reified T : Activity> Context.startActivity(body: Intent.() -> Unit)
 
 fun Activity.showPermissionRequest(
     permission: String,
-    context: Context,
     requestCode: Int,
     successListener: () -> Unit
 ) {
     when {
         ContextCompat.checkSelfPermission(
-            context,
+            this,
             permission
         ) == PackageManager.PERMISSION_GRANTED -> {
             successListener()
