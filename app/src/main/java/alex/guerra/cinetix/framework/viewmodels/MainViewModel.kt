@@ -1,6 +1,7 @@
 package alex.guerra.cinetix.framework.viewmodels
 
-import alex.guerra.cinetix.domain.MovieRemote
+import alex.guerra.cinetix.domain.MovieEntity
+import alex.guerra.cinetix.domain.MovieServer
 import alex.guerra.cinetix.framework.Event
 import alex.guerra.cinetix.framework.UseCase
 import alex.guerra.cinetix.repository.MovieRepository
@@ -13,19 +14,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    movieRepository: MovieRepository,
-    regionRepository: RegionRepository
-) : ViewModel() {
-
-    private val useCase = UseCase(
-        getPopularMovies = GetPopularMovies(movieRepository),
-        getRegion = GetRegion(regionRepository)
-    )
+class MainViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
     sealed class UiModel {
         object Loading : UiModel()
-        class Content(val movies: List<MovieRemote>) : UiModel()
+        class Content(val movies: List<MovieEntity>) : UiModel()
         object RequestLocationPermission : UiModel()
     }
 
@@ -36,8 +29,8 @@ class MainViewModel(
             return _model
         }
 
-    private val _navigation = MutableLiveData<Event<MovieRemote>>()
-    val navigation: LiveData<Event<MovieRemote>> get() = _navigation
+    private val _navigation = MutableLiveData<Event<MovieEntity>>()
+    val navigation: LiveData<Event<MovieEntity>> get() = _navigation
 
     private fun refresh() {
         _model.value = UiModel.RequestLocationPermission
@@ -46,12 +39,11 @@ class MainViewModel(
     fun getRemotePopularMovies() {
         viewModelScope.launch {
             _model.value = UiModel.Loading
-            val regionResult = useCase.getRegion()
-            _model.value = UiModel.Content(useCase.getPopularMovies(regionResult).results)
+            _model.value = UiModel.Content(movieRepository.findPopularMovies())
         }
     }
 
-    fun onMovieClicked(movie: MovieRemote) {
+    fun onMovieClicked(movie: MovieEntity) {
         _navigation.value = Event(movie)
     }
 }

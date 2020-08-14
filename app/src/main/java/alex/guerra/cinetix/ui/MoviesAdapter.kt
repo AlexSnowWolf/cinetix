@@ -2,7 +2,8 @@ package alex.guerra.cinetix.ui
 
 import alex.guerra.cinetix.R
 import alex.guerra.cinetix.databinding.MovieItemBinding
-import alex.guerra.cinetix.domain.MovieRemote
+import alex.guerra.cinetix.domain.MovieEntity
+import alex.guerra.cinetix.domain.MovieServer
 import alex.guerra.cinetix.framework.inflate
 import alex.guerra.cinetix.framework.loadUrl
 import android.view.View
@@ -11,8 +12,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesAdapter(private val clickListener: (MovieRemote) -> Unit) :
-    ListAdapter<MovieRemote, MoviesAdapter.MovieViewHolder>(MoviesDiffCallback()) {
+class MoviesAdapter(private val clickListener: (MovieEntity) -> Unit) :
+    ListAdapter<MovieEntity, MoviesAdapter.MovieViewHolder>(MoviesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         MovieViewHolder(parent.inflate(R.layout.movie_item))
@@ -24,7 +25,7 @@ class MoviesAdapter(private val clickListener: (MovieRemote) -> Unit) :
     class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = MovieItemBinding.bind(view)
 
-        fun bind(movie: MovieRemote, clickListener: (MovieRemote) -> Unit) {
+        fun bind(movie: MovieEntity, clickListener: (MovieEntity) -> Unit) {
             with(binding) {
                 imMovieItem.loadUrl("https://image.tmdb.org/t/p/w185/${movie.posterPath}")
                 tvTitleMovieItem.text = movie.title
@@ -35,10 +36,10 @@ class MoviesAdapter(private val clickListener: (MovieRemote) -> Unit) :
     }
 }
 
-class MoviesDiffCallback : DiffUtil.ItemCallback<MovieRemote>() {
-    override fun areItemsTheSame(oldItem: MovieRemote, newItem: MovieRemote): Boolean =
+class MoviesDiffCallback : DiffUtil.ItemCallback<MovieEntity>() {
+    override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean =
         oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: MovieRemote, newItem: MovieRemote): Boolean =
+    override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean =
         oldItem == newItem
 }

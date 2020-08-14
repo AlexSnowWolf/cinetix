@@ -6,13 +6,13 @@ import kotlinx.android.parcel.Parcelize
 
 data class MoviesRemoteResult(
     val page: Int,
-    val results: List<MovieRemote>,
+    val results: List<MovieServer>,
     @SerializedName("total_pages") val totalPages: Int,
     @SerializedName("total_results") val totalResults: Int
 )
 
 @Parcelize
-data class MovieRemote(
+data class MovieServer(
     val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("genre_ids") val genreIds: List<Int>,

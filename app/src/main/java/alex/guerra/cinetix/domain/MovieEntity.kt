@@ -1,30 +1,28 @@
 package alex.guerra.cinetix.domain
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class MovieEntity(
-    val id: Long = 0L,
-    val adult: Boolean,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val title: String,
+    val overview: String,
+    val releaseDate: String,
+    val posterPath: String,
     val backdropPath: String = "",
-    val genreIds: List<Int>,
     val originalLanguage: String,
     val originalTitle: String,
-    val overview: String,
     val popularity: Double,
-    val posterPath: String,
-    val releaseDate: String,
-    val title: String,
-    val video: Boolean,
     val voteAverage: Double,
-    val voteCount: Int
+    val favorite: Boolean
 ) {
     companion object {
-        fun fromMovieRemote(movie: MovieRemote) =
+        fun fromServerMovie(movie: MovieServer) =
             MovieEntity(
-                id = movie.id.toLong(),
-                adult = movie.adult,
+                id = 0,
                 backdropPath = movie.backdropPath ?: "",
-                genreIds = movie.genreIds,
                 originalLanguage = movie.originalLanguage,
                 originalTitle = movie.originalTitle,
                 overview = movie.overview,
@@ -32,26 +30,8 @@ data class MovieEntity(
                 posterPath = movie.posterPath,
                 releaseDate = movie.releaseDate,
                 title = movie.title,
-                video = movie.video,
                 voteAverage = movie.voteAverage,
-                voteCount = movie.voteCount
+                favorite = false
             )
     }
-
-    fun toMovieRemote() = MovieRemote(
-        id = id.toInt(),
-        adult = adult,
-        backdropPath = backdropPath,
-        genreIds = genreIds,
-        originalLanguage = originalLanguage,
-        originalTitle = originalTitle,
-        overview = overview,
-        popularity = popularity,
-        posterPath = posterPath,
-        releaseDate = releaseDate,
-        title = title,
-        video = video,
-        voteAverage = voteAverage,
-        voteCount = voteCount
-    )
 }

@@ -1,7 +1,7 @@
 package alex.guerra.cinetix.ui
 
 import alex.guerra.cinetix.databinding.ActivityDetailBinding
-import alex.guerra.cinetix.domain.MovieRemote
+import alex.guerra.cinetix.domain.MovieServer
 import alex.guerra.cinetix.framework.loadUrl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,8 +17,11 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        /*
 
-        intent.getParcelableExtra<MovieRemote>(MOVIE)?.run {
+
+
+        intent.getParcelableExtra<MovieServer>(MOVIE)?.run {
             with(binding) {
                 movieDetailToolbar.title = title
                 val background = backdropPath ?: posterPath
@@ -43,6 +46,9 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+         */
+
     }
 
     companion object {

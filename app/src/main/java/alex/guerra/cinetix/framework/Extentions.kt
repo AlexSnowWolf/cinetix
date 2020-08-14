@@ -1,5 +1,6 @@
 package alex.guerra.cinetix.framework
 
+import alex.guerra.cinetix.CinetixApp
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -48,3 +49,6 @@ fun Activity.showPermissionRequest(
         }
     }
 }
+
+val Context.app: CinetixApp
+    get() = applicationContext as CinetixApp

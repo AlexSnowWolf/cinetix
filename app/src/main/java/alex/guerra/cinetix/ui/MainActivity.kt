@@ -1,6 +1,7 @@
 package alex.guerra.cinetix.ui
 
 import alex.guerra.cinetix.databinding.ActivityMainBinding
+import alex.guerra.cinetix.framework.app
 import alex.guerra.cinetix.framework.showPermissionRequest
 import alex.guerra.cinetix.framework.startActivity
 import alex.guerra.cinetix.framework.viewmodels.MainViewModel
@@ -35,9 +36,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.navigation.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { movie ->
+                /*
                 startActivity<DetailActivity> {
                     putExtra(DetailActivity.MOVIE, movie)
                 }
+
+                 */
             }
         })
     }
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        viewModel = ViewModelProvider(this, MainViewModelFactory(this))
+        viewModel = ViewModelProvider(this, MainViewModelFactory(app))
             .get(MainViewModel::class.java)
 
         movieAdapter = MoviesAdapter(viewModel::onMovieClicked)
