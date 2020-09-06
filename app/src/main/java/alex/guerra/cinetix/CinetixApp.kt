@@ -1,6 +1,6 @@
 package alex.guerra.cinetix
 
-import alex.guerra.cinetix.database.MovieDatabase
+import alex.guerra.cinetix.data.database.MovieDatabase
 import android.app.Application
 import androidx.room.Room
 

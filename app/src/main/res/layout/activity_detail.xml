@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.DetailActivity">
+    tools:context=".ui.detail.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/AppBarLayout"
@@ -45,6 +45,8 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -67,6 +69,15 @@
                 android:text="TextView" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/movieDetailFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/favorite_selector"
+        app:layout_anchor="@id/AppBarLayout"
+        app:layout_anchorGravity="bottom|end"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
