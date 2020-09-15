@@ -3,9 +3,11 @@ package alex.guerra.cinetix.ui.detail
 import alex.guerra.cinetix.R
 import alex.guerra.cinetix.databinding.ActivityDetailBinding
 import alex.guerra.cinetix.ui.common.app
+import alex.guerra.cinetix.ui.common.getViewModel
 import alex.guerra.cinetix.ui.common.loadUrl
+import alex.guerra.cinetix.ui.detail.di.DetailActivityComponent
+import alex.guerra.cinetix.ui.detail.di.DetailActivityModule
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.bold
@@ -15,11 +17,15 @@ import androidx.lifecycle.Observer
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var component: DetailActivityComponent
+    private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
+    /*
     private val viewModel: DetailViewModel by viewModels {
         DetailViewModelFactory(
             intent.getIntExtra(MOVIE, -1), app
         )
     }
+     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUp() {
+        component = app.component.plus(DetailActivityModule(intent.getIntExtra(MOVIE, -1)))
         binding.movieDetailFavorite.setOnClickListener { viewModel.onFavoriteClicked() }
     }
 
@@ -72,7 +79,6 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
-
 
     companion object {
         const val MOVIE = "DetailActivity:movie"

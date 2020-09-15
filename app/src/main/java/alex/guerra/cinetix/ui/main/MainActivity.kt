@@ -2,15 +2,17 @@ package alex.guerra.cinetix.ui.main
 
 import alex.guerra.cinetix.databinding.ActivityMainBinding
 import alex.guerra.cinetix.ui.common.app
-import alex.guerra.cinetix.ui.common.startActivity
+import alex.guerra.cinetix.ui.common.getViewModel
 import alex.guerra.cinetix.ui.common.showPermissionRequest
+import alex.guerra.cinetix.ui.common.startActivity
 import alex.guerra.cinetix.ui.detail.DetailActivity
 import alex.guerra.cinetix.ui.main.MainViewModel.UiModel
+import alex.guerra.cinetix.ui.main.di.MainActivityComponent
+import alex.guerra.cinetix.ui.main.di.MainActivityModule
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 
@@ -18,7 +20,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel: MainViewModel by viewModels { MainViewModelFactory(app) }
+    // private val viewModel: MainViewModel by viewModels { MainViewModelFactory(app) }
+    private lateinit var component: MainActivityComponent
+    private val viewModel: MainViewModel by lazy { getViewModel { component.mainViewModel } }
 
     private lateinit var movieAdapter: MoviesAdapter
 
@@ -57,10 +61,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-
+        component = app.component.plus(MainActivityModule())
         movieAdapter =
             MoviesAdapter(viewModel::onMovieClicked)
-
         binding.recyclerView.apply { adapter = movieAdapter }
     }
 
