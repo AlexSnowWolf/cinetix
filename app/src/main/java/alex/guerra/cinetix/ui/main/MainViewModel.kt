@@ -1,15 +1,18 @@
 package alex.guerra.cinetix.ui.main
 
 import alex.guerra.cinetix.ui.common.Event
+import alex.guerra.cinetix.ui.common.ScopeViewModel
 import alex.guerra.domain.Movie
 import alex.guerra.usecases.GetPopularMovies
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel() {
+class MainViewModel(
+    private val getPopularMovies: GetPopularMovies,
+    uiDispatcher: CoroutineDispatcher
+) : ScopeViewModel(uiDispatcher) {
 
     sealed class UiModel {
         object Loading : UiModel()
@@ -33,7 +36,7 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel(
     }
 
     fun getRemotePopularMovies() {
-        viewModelScope.launch {
+        launch {
             _model.value =
                 UiModel.Loading
             _model.value =
