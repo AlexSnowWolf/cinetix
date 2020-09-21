@@ -17,7 +17,7 @@ class RegionRepository(
     }
 
     companion object {
-        private const val DEFAULT_REGION = "US"
+        const val DEFAULT_REGION = "US"
     }
 }
 
