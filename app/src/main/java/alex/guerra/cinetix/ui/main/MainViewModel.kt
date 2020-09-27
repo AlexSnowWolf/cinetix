@@ -14,9 +14,13 @@ class MainViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : ScopeViewModel(uiDispatcher) {
 
+    init {
+        initScope()
+    }
+
     sealed class UiModel {
         object Loading : UiModel()
-        class Content(val movies: List<Movie>) : UiModel()
+        data class Content(val movies: List<Movie>) : UiModel()
         object RequestLocationPermission : UiModel()
     }
 
@@ -37,16 +41,17 @@ class MainViewModel(
 
     fun getRemotePopularMovies() {
         launch {
-            _model.value =
-                UiModel.Loading
-            _model.value =
-                UiModel.Content(
-                    getPopularMovies()
-                )
+            _model.value = UiModel.Loading
+            _model.value = UiModel.Content(getPopularMovies())
         }
     }
 
     fun onMovieClicked(movie: Movie) {
         _navigation.value = Event(movie)
+    }
+
+    override fun onCleared() {
+        destroyScope()
+        super.onCleared()
     }
 }

@@ -6,6 +6,7 @@ import alex.guerra.usecases.FindMovieById
 import alex.guerra.usecases.ToggleMovieFavorite
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 class DetailActivityModule(private val movieId: Int) {
@@ -20,8 +21,9 @@ class DetailActivityModule(private val movieId: Int) {
     @Provides
     fun detailViewModelProvider(
         findMovieById: FindMovieById,
-        toggleMovieFavorite: ToggleMovieFavorite
+        toggleMovieFavorite: ToggleMovieFavorite,
+        uiDispatcher: CoroutineDispatcher
     ): DetailViewModel {
-        return DetailViewModel(movieId, findMovieById, toggleMovieFavorite)
+        return DetailViewModel(movieId, findMovieById, toggleMovieFavorite, uiDispatcher)
     }
 }
