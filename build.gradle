@@ -35,7 +35,9 @@ allprojects {
 
         androidTestLibs = [
                 testRunner: 'androidx.test:runner:1.2.0',
-                espresso  : 'androidx.test.espresso:espresso-core:3.2.0'
+                espresso     : 'androidx.test.espresso:espresso-contrib:3.2.0',
+                rules        : 'androidx.test:rules:1.2.0',
+
         ]
 
         kotlinLibs = [
