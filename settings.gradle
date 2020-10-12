@@ -1,2 +1,6 @@
+include ':testShared'
+include ':domain'
+include ':usecases'
+include ':data'
 include ':app'
 rootProject.name = "Cinetix"

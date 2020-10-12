@@ -1,0 +1,11 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation project(":domain")
+    implementation kotlinLibs.values()
+    testImplementation testLibs.values()
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
